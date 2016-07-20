@@ -1,0 +1,8 @@
+prefix=/root/Documents/roswork/DJIChallenge2016_new/src/build/devel
+
+Name: dji_sdk_lib
+Description: Description of dji_sdk_lib
+Version: 0.1.7
+Cflags: -I/root/Documents/roswork/DJIChallenge2016_new/src/dji_sdk_lib/include
+Libs: -L/root/Documents/roswork/DJIChallenge2016_new/src/build/devel/lib -ldji_sdk_lib
+Requires: 

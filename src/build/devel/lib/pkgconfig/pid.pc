@@ -1,0 +1,8 @@
+prefix=/root/Documents/roswork/DJIChallenge2016_new/src/build/devel
+
+Name: pid
+Description: Description of pid
+Version: 0.0.15
+Cflags: -I/root/Documents/roswork/DJIChallenge2016_new/src/build/devel/include -I/root/Documents/roswork/DJIChallenge2016_new/src/pid/include
+Libs: -L/root/Documents/roswork/DJIChallenge2016_new/src/build/devel/lib 
+Requires: roscpp std_msgs message_runtime dynamic_reconfigure diagnostic_updater

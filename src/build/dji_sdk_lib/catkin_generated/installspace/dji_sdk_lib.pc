@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: dji_sdk_lib
+Description: Description of dji_sdk_lib
+Version: 0.1.7
+Cflags: -I/usr/local/include
+Libs: -L/usr/local/lib -ldji_sdk_lib
+Requires: 

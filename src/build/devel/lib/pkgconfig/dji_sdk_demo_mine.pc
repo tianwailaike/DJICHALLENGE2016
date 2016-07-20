@@ -1,0 +1,8 @@
+prefix=/root/Documents/roswork/DJIChallenge2016_new/src/build/devel
+
+Name: dji_sdk_demo_mine
+Description: Description of dji_sdk_demo_mine
+Version: 0.1.7
+Cflags: 
+Libs: -L/root/Documents/roswork/DJIChallenge2016_new/src/build/devel/lib 
+Requires: 

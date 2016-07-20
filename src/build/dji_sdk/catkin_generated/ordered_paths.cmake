@@ -1,0 +1,1 @@
+set(ORDERED_PATHS "/root/Documents/roswork/DJIChallenge2016_new/src/dji_sdk_lib/include;/opt/ros/indigo/include;/usr/include")

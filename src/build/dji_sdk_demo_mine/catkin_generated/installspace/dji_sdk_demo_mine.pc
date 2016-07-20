@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: dji_sdk_demo_mine
+Description: Description of dji_sdk_demo_mine
+Version: 0.1.7
+Cflags: 
+Libs: -L/usr/local/lib 
+Requires: 
