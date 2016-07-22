@@ -171,7 +171,7 @@ public:
 #endif
 
 
-Point2f  tags_centroid(ApriltagDetector &detection);
+Point2f  tags_centroid(AprilTags::TagDetection &detection,Point2f &centr);
 
 
 void cmd_from_mobile_callback(const dji_sdk::TransparentTransmissionData & transData)
