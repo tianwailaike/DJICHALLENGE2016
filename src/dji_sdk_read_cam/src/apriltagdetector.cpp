@@ -97,6 +97,7 @@ void ApriltagDetector::processImage ( cv::Mat& image )
 
   ++m_frames;
   Mat image_gray;
+  vector <cv::Mat> imgWin;
   if ( image.dims!=2 )
     cv::cvtColor ( image, image_gray, CV_BGR2GRAY );
   else
@@ -110,22 +111,34 @@ void ApriltagDetector::processImage ( cv::Mat& image )
     //the first detection when switched to the small tag using a croped window area 
   if(small_tag_count==1)
   {
-    cv::Mat img_b2swin = image_gray(cv::Range(0,image_gray.rows),cv::Range(m_win[2]>m_win[3]?m_win[2]:m_win[3],image_gray.cols)).clone();
+    cv::Mat img_b2swin = image_gray(cv::Range(0,image_gray.rows),cv::Range(m_win[0],image_gray.cols)).clone();
     detections = m_tagDetector->extractTags(img_b2swin);
+               for ( int sa=0; sa<detections.size(); sa++ )
+            {
+	        for(int saa = 0;saa<4;saa++)
+		{
+		  detections[sa].p[saa].first+=m_win[0];
+                  detections[sa].p[saa].second+=0;
+		}
+		 detections[sa].cxy.first+=m_win[0];
+                 detections[sa].cxy.second+=0;
+            }
+   
     small_tag_count = 0;
   }
   // no prev window, do detection on the whole image
  
-      if ( m_win.size() ==0||m_mode==0 )
+      else if ( m_win.size() ==0||m_mode==0 )
     {
+      
       detections = m_tagDetector->extractTags ( image_gray );
     }
 
   // prev window exists, only process in it
-  else
+    else
     {
-      vector <cv::Mat> imgWin;
-      for(int  i= 0;i<detections.size();i++)
+      
+      for(int  i= 0;i<m_win.size();i++)
       {
       imgWin[i] = image_gray ( cv::Range ( m_win[i][2],m_win[i][3] ),cv::Range ( m_win[i][0],m_win[i][1] ) ).clone();
       detections[i] = m_tagDetector->extractTags ( imgWin[i] );
@@ -153,21 +166,19 @@ void ApriltagDetector::processImage ( cv::Mat& image )
                detections[i].cxy.second+=m_win[i][2];
         }
         
-   
-        
-
-	}
+    }
+	
             for(int kk = 0;kk<detections.size();kk++)
 	{
 	    if ( detections[kk].empty() )
               m_win[kk].clear();
-         else
-          {
-              m_win[kk] = point2win (imwi[kk] , 1 );
+            else
+              m_win[kk] = point2win (imgWin[kk], 1 );
 //        cout<<m_win[0]<<" "<<m_win[1]<<" "<<m_win[2]<<" "<<m_win[3]<<endl;
-	      tags_centroid(detections,small_tag_center);
-           } 
-    }
+	 }
+	   tags_centroid(detections,small_tag_center);
+  
+
 
     
 
@@ -188,8 +199,8 @@ void ApriltagDetector::processImage ( cv::Mat& image )
         {
           detections[i].draw ( image );
         }
-      imshow ( "AprilTag", image );
-      waitKey ( 1 );
+      cv::imshow ( "AprilTag", image );
+      cv::waitKey ( 1 );
 
     }
 }
@@ -329,8 +340,8 @@ void ApriltagDetector::print_detections ( )
 	  //when switched to small tag 
 	  if(detections.size()==1)
 	  {
-	  small_tag_center.x = detections.cxy.first+60;
-	  small_tag_center.y = detections.cxy.second;
+	  small_tag_center.x = detections[0].cxy.first+60;
+	  small_tag_center.y = detections[0].cxy.second;
 	  }
         }
 
@@ -433,7 +444,7 @@ std:: vector<vector<int>>  ApriltagDetector::point2win ( cv::Mat image, float de
   return m_win;
 }
 //caculate  the  centroid of multi small tags 
-Point2f  tag_centroid(ApriltagDetector &detec,Point2f &centr)
+Point2f  tag_centroid(AprilTags::TagDetection &detec,Point2f &centr)
 {
   for(int i =0;i<detec.size();i++)
   {
@@ -442,4 +453,5 @@ Point2f  tag_centroid(ApriltagDetector &detec,Point2f &centr)
   }
       centr.x/= detec.size();
       centr.y/= detec.size();
+      return centr;
   }
